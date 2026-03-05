@@ -23,7 +23,7 @@ export default async function handler(req, res) {
           contents: [{ parts: [{ text: prompt }] }],
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 1000,
+            maxOutputTokens: 2000,
           }
         })
       }
@@ -32,14 +32,11 @@ export default async function handler(req, res) {
     const data = await response.json();
     let text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
     
-    // Strip markdown code blocks
     text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     
-    // Extract JSON object
     const match = text.match(/\{[\s\S]*\}/);
     if (match) text = match[0];
     
-    // Parse and re-stringify to validate
     const parsed = JSON.parse(text);
     res.status(200).json(parsed);
 
