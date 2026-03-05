@@ -1623,7 +1623,7 @@ async function fetchAnalysis() {
 最新ニュース:
 ${newsCtx}
 
-以下のJSONのみで返答。JSONの前後に説明や```は不要:
+Return ONLY valid JSON. No explanation, no markdown:
 {"analysis":"3文程度の市場分析。FTやWSJの文体で、専門的かつ読みやすく。AIっぽい表現は避ける","pred_4h":"4時間後の予想価格","pred_4h_dir":"UP or DOWN","pred_4h_conf":"High or Medium or Low confidence","pred_1d":"翌日の予想価格","pred_1d_dir":"UP or DOWN","pred_1d_conf":"High or Medium or Low confidence","bias":"Bullish / Bearish / Neutral","bias_note":"12文字以内の補足"}`;
 
   try {
