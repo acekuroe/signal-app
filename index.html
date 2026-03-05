@@ -1633,7 +1633,9 @@ Return ONLY valid JSON. No explanation, no markdown:
       body: JSON.stringify({prompt})
     });
     const data = await res.json();
-    let txt = (data.text||'').replace(/```json|```/g,'').trim();
+    let txt = (data.text||'').trim();
+    if (txt.startsWith('"')) txt = JSON.parse(txt);
+    txt = txt.replace(/```json|```/g,'').trim();
     const m = txt.match(/{[\s\S]*}/);
     if (m) txt = m[0];
     const p = JSON.parse(txt);
