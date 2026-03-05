@@ -30,9 +30,18 @@ export default async function handler(req, res) {
     );
 
     const data = await response.json();
-    console.log('Gemini raw response:', JSON.stringify(data));
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    res.status(200).json({ text });
+    let text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    
+    // Strip markdown code blocks
+    text = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    
+    // Extract JSON object
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) text = match[0];
+    
+    // Parse and re-stringify to validate
+    const parsed = JSON.parse(text);
+    res.status(200).json(parsed);
 
   } catch (err) {
     res.status(500).json({ error: err.message });
