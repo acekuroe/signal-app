@@ -1632,13 +1632,8 @@ Return ONLY valid JSON. No explanation, no markdown:
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({prompt})
     });
-    const data = await res.json();
-    let txt = (data.text||'').trim();
-    if (txt.startsWith('"')) txt = JSON.parse(txt);
-    txt = txt.replace(/```json|```/g,'').trim();
-    const m = txt.match(/{[\s\S]*}/);
-    if (m) txt = m[0];
-    const p = JSON.parse(txt);
+    const p = await res.json();
+    if (p.error) throw new Error(p.error);
 
     ab.className = 'as-body';
     ab.textContent = p.analysis;
